@@ -1,0 +1,333 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeatherNow | Weather App</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 18px;
+            font-family: "Segoe UI", Arial, sans-serif;
+            color: #17324d;
+            background:
+                radial-gradient(circle at 10% 10%, #ffffff 0%, transparent 35%),
+                linear-gradient(135deg, #dff6ff, #bde7ff, #e4f5ff);
+        }
+
+        .app {
+            width: 100%;
+            max-width: 490px;
+            padding: 32px;
+            border: 1px solid rgba(255,255,255,.9);
+            border-radius: 28px;
+            background: rgba(255,255,255,.88);
+            box-shadow: 0 20px 60px rgba(45, 113, 163, .17);
+            backdrop-filter: blur(18px);
+        }
+
+        h1 {
+            margin: 0 0 8px;
+            color: #1479b8;
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -.8px;
+        }
+
+        .subtitle {
+            margin: 0 0 26px;
+            color: #6b8298;
+            font-size: 15px;
+        }
+
+        .search {
+            display: flex;
+            gap: 9px;
+            padding: 6px;
+            border: 1px solid #d9eaf5;
+            border-radius: 15px;
+            background: #f5fbff;
+        }
+
+        input {
+            width: 100%;
+            min-width: 0;
+            padding: 13px 12px;
+            border: none;
+            border-radius: 10px;
+            outline: none;
+            background: transparent;
+            color: #17324d;
+            font-size: 15px;
+        }
+
+        input::placeholder {
+            color: #94a9ba;
+        }
+
+        input:focus {
+            box-shadow: inset 0 0 0 1px #8bd5f5;
+        }
+
+        button {
+            padding: 13px 19px;
+            flex-shrink: 0;
+            border: none;
+            border-radius: 11px;
+            color: white;
+            background: linear-gradient(135deg, #168bd0, #43b8ed);
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 5px 13px rgba(22,139,208,.2);
+            transition: .2s ease;
+        }
+
+        button:hover {
+            transform: translateY(-1px);
+            background: linear-gradient(135deg, #0877ba, #29a8e2);
+        }
+
+        .error {
+            margin-top: 18px;
+            padding: 13px 15px;
+            border: 1px solid #fecaca;
+            border-radius: 12px;
+            background: #fff1f2;
+            color: #b91c1c;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .weather {
+            margin-top: 27px;
+            padding: 25px 18px;
+            border: 1px solid #dceffc;
+            border-radius: 23px;
+            text-align: center;
+            background: linear-gradient(160deg, #f0faff, #ffffff 75%);
+        }
+
+        .location {
+            color: #1e5b83;
+            font-size: 23px;
+            font-weight: 750;
+            overflow-wrap: anywhere;
+        }
+
+        .icon {
+            display: block;
+            width: 120px;
+            height: 120px;
+            margin: 5px auto 0;
+            filter: drop-shadow(0 8px 12px rgba(75, 145, 185, .15));
+        }
+
+        .temperature {
+            margin: 0;
+            color: #176da5;
+            font-size: 70px;
+            font-weight: 800;
+            letter-spacing: -4px;
+            line-height: 1.15;
+        }
+
+        .description {
+            margin: 8px 0 25px;
+            color: #6a879d;
+            font-size: 17px;
+            text-transform: capitalize;
+        }
+
+        .details {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+            text-align: left;
+        }
+
+        .detail {
+            padding: 17px 14px;
+            border: 1px solid #e1eff8;
+            border-radius: 15px;
+            background: #ffffff;
+            box-shadow: 0 4px 12px rgba(69, 133, 171, .05);
+            transition: .2s ease;
+        }
+
+        .detail:hover {
+            border-color: #a8ddf7;
+            transform: translateY(-2px);
+        }
+
+        .detail-label {
+            display: block;
+            margin-bottom: 9px;
+            color: #7c96a9;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .detail-value {
+            color: #215477;
+            font-size: 18px;
+            font-weight: 750;
+            overflow-wrap: anywhere;
+        }
+
+        .empty {
+            margin-top: 25px;
+            padding: 28px 12px;
+            border: 1px dashed #b9dff2;
+            border-radius: 20px;
+            text-align: center;
+            background: #f3fbff;
+            color: #6b879b;
+            line-height: 1.7;
+        }
+
+        .empty p {
+            margin-bottom: 0;
+        }
+
+        .empty-icon {
+            font-size: 52px;
+            margin-bottom: 8px;
+        }
+
+        footer {
+            margin-top: 25px;
+            text-align: center;
+            color: #91a8b8;
+            font-size: 12px;
+        }
+
+        @media (max-width: 420px) {
+            .app {
+                padding: 22px 17px;
+                border-radius: 22px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            .search {
+                flex-direction: column;
+                padding: 8px;
+            }
+
+            .search button {
+                width: 100%;
+            }
+
+            .temperature {
+                font-size: 60px;
+            }
+
+            .detail {
+                padding: 15px 11px;
+            }
+
+            .detail-value {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="app">
+        <h1>🌦️ Weather_App</h1>
+        <p class="subtitle"></p>
+
+        <form class="search" method="get">
+            <input
+                type="text"
+                name="city"
+                placeholder="Enter city name..."
+                value="{{ city|default:'' }}"
+                aria-label="City name"
+                required
+            >
+            <button type="submit">Search ↗</button>
+        </form>
+
+        {% if error %}
+            <div class="error" role="alert">{{ error }}</div>
+        {% endif %}
+
+        {% if weather %}
+            <section class="weather" aria-label="Current weather">
+                <div class="location">
+                    {{ weather.city }}, {{ weather.country }}
+                </div>
+
+                <img
+                    class="icon"
+                    src="https://openweathermap.org/img/wn/{{ weather.icon }}@2x.png"
+                    alt="{{ weather.description }}"
+                >
+
+                <p class="temperature">
+                    {{ weather.temperature|floatformat:0 }}°C
+                </p>
+
+                <p class="description">
+                    {{ weather.description }}
+                </p>
+
+                <div class="details">
+                    <div class="detail">
+                        <span class="detail-label"> Feels like</span>
+                        <span class="detail-value">
+                            {{ weather.feels_like|floatformat:0 }}°C
+                        </span>
+                    </div>
+
+                    <div class="detail">
+                        <span class="detail-label">Humidity</span>
+                        <span class="detail-value">
+                            {{ weather.humidity }}%
+                        </span>
+                    </div>
+
+                    <div class="detail">
+                        <span class="detail-label"> Wind speed</span>
+                        <span class="detail-value">
+                            {{ weather.wind_speed }} m/s
+                        </span>
+                    </div>
+
+                    <div class="detail">
+                        <span class="detail-label">Country</span>
+                        <span class="detail-value">
+                            {{ weather.country }}
+                        </span>
+                    </div>
+                </div>
+            </section>
+        {% else %}
+            {% if not error %}
+                <div class="empty">
+                    <div class="empty-icon">⛅</div>
+                    <strong>Ready to explore the weather?</strong>
+                    <p>Enter a city above to see its current conditions.</p>
+                </div>
+            {% endif %}
+        {% endif %}
+
+        <footer>
+        
+    </main>
+</body>
+</html>
